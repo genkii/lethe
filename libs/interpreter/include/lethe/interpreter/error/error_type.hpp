@@ -1,0 +1,7 @@
+enum class ErrorType
+{
+    STACK_UNDERFLOW,
+    INVALID_OPCODE,
+    INVALID_REGISTER,
+    REVERSIBILITY_VIOLATION,
+};
