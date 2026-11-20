@@ -74,12 +74,14 @@ bool Runtime::step()
         if (memory.stack.size() == 0)
         {
             error_manager.report(ErrorType::STACK_UNDERFLOW, "Cant pop number from empty stack");
+            return false;
         }
 
         if (int_registers[target_register] != 0)
         {
             error_manager.report(ErrorType::REVERSIBILITY_VIOLATION,
                                  "Cant reverse operation when register isnt empty");
+            return false;
         }
 
         int_registers[target_register] ^= memory.stack.pop_stack();

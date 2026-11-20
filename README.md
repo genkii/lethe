@@ -11,3 +11,8 @@ The VM uses big-endian bytecode values
 
 
 // Add others and implement test for new opcodes
+
+
+cmake --preset default
+cmake --build --preset default
+ctest --preset test

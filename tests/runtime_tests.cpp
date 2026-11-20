@@ -310,3 +310,89 @@ TEST(RuntimeTests, ROT_REVERSE)
 
     EXPECT_EQ(debug_register, 5);
 }
+
+TEST(RuntimeTests, PUSH_STACK)
+{
+    std::vector<std::uint8_t> program = {
+        0x00, // XORI
+        0x01, // Register 1
+        0x00, // Immediate byte 0
+        0x00, // Byte 1
+        0x00, // Byte 2
+        0x00, // Byte 3
+        0x00, // Byte 4
+        0x00, // Byte 5
+        0x00, // Byte 6
+        0x05, // Byte 7
+        0x07, // PUSH
+        0x01, // Register 1
+        0x00, // XORI
+        0x01, // Register 1
+        0x00, // Immediate byte 0
+        0x00, // Byte 1
+        0x00, // Byte 2
+        0x00, // Byte 3
+        0x00, // Byte 4
+        0x00, // Byte 5
+        0x00, // Byte 6
+        0x05, // Byte 7
+        0x07, // PUSH
+        0x01, // Register 1
+    };
+    Runtime runtime = Runtime{program};
+    runtime.start();
+
+    EXPECT_EQ(runtime.memory.stack.size(), 2);
+}
+
+TEST(RuntimeTests, POP_STACK)
+{
+    std::vector<std::uint8_t> program = {
+        0x00, // XORI
+        0x01, // Register 1
+        0x00, // Immediate byte 0
+        0x00, // Byte 1
+        0x00, // Byte 2
+        0x00, // Byte 3
+        0x00, // Byte 4
+        0x00, // Byte 5
+        0x00, // Byte 6
+        0x05, // Byte 7
+        0x07, // PUSH
+        0x01, // Register 1
+        0x06, // POP
+        0x01, // Register 1
+    };
+    Runtime runtime = Runtime{program};
+    runtime.start();
+
+    EXPECT_EQ(runtime.memory.stack.size(), 0);
+
+    std::uint64_t debug_register = runtime.debug_get_registers()[1];
+
+    EXPECT_EQ(debug_register, 5);
+}
+
+TEST(RuntimeTests, PUSH_REVERSE)
+{
+    std::vector<std::uint8_t> program = {
+        0x00, // XORI
+        0x01, // Register 1
+        0x00, // Immediate byte 0
+        0x00, // Byte 1
+        0x00, // Byte 2
+        0x00, // Byte 3
+        0x00, // Byte 4
+        0x00, // Byte 5
+        0x00, // Byte 6
+        0x05, // Byte 7
+        0x07, // PUSH
+        0x01, // Register 1
+        0x06, // POP
+        0x01, // Register 1
+    };
+    Runtime runtime = Runtime{program};
+    runtime.start();
+
+    EXPECT_EQ(runtime.memory.stack.size(), 0);
+}
